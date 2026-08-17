@@ -1,0 +1,533 @@
+@import 'tailwindcss';
+
+/* ───────────────────────────────────────────────────────────
+   allyours design tokens — taken from the brand moodboard.
+
+   Electric blue is the brand. It is the logo colour, the marker
+   squiggle, and the default accent. Magenta and mint are the two
+   supporting colours; butter is reserved for the donation block
+   so money always looks like money.
+   ─────────────────────────────────────────────────────────── */
+@theme {
+  /* Bone paper, not screen-white. Every poster on the inspiration board
+     sits on an off-white ground — pure #fff is what makes a page read as
+     "template" instead of "print". White is kept for cards ON the paper. */
+  --color-paper: #f6f5f0;
+  --color-card: #ffffff;
+  --color-paper-2: #edf1fa; /* pale blue panel */
+  --color-ink: #101014;
+  --color-ink-60: #55565f;
+  --color-ink-30: #94959e;
+  --color-rule: #e2e1da;
+
+  --color-brand: #2226c7; /* logo blue, marker squiggle */
+  --color-azure: #2269f7; /* lighter blue, blobs and washes */
+  --color-magenta: #f534d8; /* Literature Arts */
+  --color-mint: #00e39b; /* Design Studies */
+
+  /* Darker pair for TEXT on light backgrounds. The bright mint and magenta
+     are fill colours — as small text on white they fail contrast badly
+     (mint is about 1.7:1), so anything readable uses these instead. */
+  --color-magenta-ink: #b81a9e;
+  --color-mint-ink: #04795a;
+  --color-butter: #ffd447; /* Donate */
+
+  /* set by next/font in layout.tsx, with a clean fallback stack */
+  --font-sans:
+    var(--font-sans-face), ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-marker: var(--font-marker-face), 'Bradley Hand', 'Comic Sans MS', cursive;
+
+  --text-display: clamp(2.75rem, 8.5vw, 8rem);
+  --text-section: clamp(2rem, 5vw, 4.25rem);
+
+  /* A slightly overshooting ease for the playful hovers — the stock
+     ease-out curves are part of what makes interfaces feel machine-made. */
+  --ease-pop: cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* clears the sticky header on anchor jumps */
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A whisper of print grain over everything. The brand's own collateral is
+   photographed paper — crumpled sheets, tape, tote bags — and this is the
+   cheapest honest echo of that. Uniform, fixed, and faint enough that you
+   only notice it when it's gone. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+/* Type ------------------------------------------------------------- */
+/* 800, not 700 — the type on the inspiration board is unapologetically
+   chunky, and at display sizes Outfit's bold reads a touch thin. */
+.display {
+  font-size: var(--text-display);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+.section-title {
+  font-size: var(--text-section);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+/* The handwritten marker word — the brand does this with "find your
+   Spark", so one word per headline gets it and no more. */
+.marker {
+  font-family: var(--font-marker);
+  font-weight: 700;
+  letter-spacing: 0;
+  /* the script sits small next to a grotesk, so it needs a size bump */
+  font-size: 1.15em;
+  line-height: 0.9;
+}
+
+/* Pill badge — the "ENG / MM" tag and the little "refined curves"
+   captions from the board. Those are lowercase, bold and friendly;
+   the LETTERSPACED-MICRO-CAPS eyebrow is a stock-template move the
+   brand never makes, so the pill deliberately isn't one. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: lowercase;
+}
+
+/* Highlighter chip behind a word — the green name-tags on the team
+   sheets, the pink label blocks on the event posters. Square-ish
+   corners on purpose: everything else is round, and the contrast is
+   what makes it read as a sticker. */
+.tag {
+  display: inline-block;
+  padding: 0.04em 0.22em 0.1em;
+  border-radius: 0.12em;
+  /* the `rotate` property, not transform — so hover utilities like
+     rotate-0 can straighten a chip without fighting this rule */
+  rotate: -1.1deg;
+}
+
+/* A headline chip that stamps itself on when its section scrolls in:
+   it arrives over-rotated and slightly small, then settles. */
+.reveal .tag-stamp,
+.reveal-pop .tag-stamp {
+  rotate: -6deg;
+  scale: 0.85;
+  opacity: 0;
+  transition:
+    rotate 0.55s var(--ease-pop) 0.12s,
+    scale 0.55s var(--ease-pop) 0.12s,
+    opacity 0.3s linear 0.12s;
+}
+
+.reveal.is-in .tag-stamp,
+.reveal-pop.is-in .tag-stamp {
+  rotate: -1.1deg;
+  scale: 1;
+  opacity: 1;
+}
+
+/* A strip of washi tape, as on the brand's typeface sample card. */
+.tape {
+  position: absolute;
+  width: 7rem;
+  height: 1.7rem;
+  background: color-mix(in srgb, var(--color-magenta) 78%, transparent);
+  clip-path: polygon(
+    0% 8%, 3% 0%, 97% 4%, 100% 14%, 98% 96%, 95% 100%, 4% 98%, 0% 88%
+  );
+}
+
+/* Sticker-press hover for the main buttons: the button lifts toward you
+   and leaves a solid offset shadow, like a mis-registered print. On dark
+   sections set --pop-shadow to white for the same effect in negative. */
+.btn-pop {
+  --pop-shadow: var(--color-ink);
+  transition:
+    transform 0.25s var(--ease-pop),
+    box-shadow 0.25s var(--ease-pop);
+}
+
+.btn-pop:hover {
+  transform: translate(-0.18rem, -0.18rem) rotate(-0.5deg);
+  box-shadow: 0.3rem 0.3rem 0 var(--pop-shadow);
+}
+
+.btn-pop:active {
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 var(--pop-shadow);
+}
+
+/* Background pattern of Burmese characters, very faint, the way the
+   brand sheets use them as a texture rather than as text. */
+.mm-pattern {
+  /* Burmese characters as a texture, the way the brand sheets use them.
+     Kept very faint — at any more than this it reads as wallpaper and
+     fights the headline. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg font-family='sans-serif' fill='%232269f7' fill-opacity='0.05'%3E%3Ctext x='30' y='80' font-size='54'%3E%E1%80%80%3C/text%3E%3Ctext x='250' y='150' font-size='46'%3E%E1%80%9E%3C/text%3E%3Ctext x='110' y='250' font-size='60'%3E%E1%80%99%3C/text%3E%3Ctext x='320' y='330' font-size='48'%3E%E1%80%95%3C/text%3E%3Ctext x='40' y='390' font-size='44'%3E%E1%80%9C%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-size: 420px 420px;
+}
+
+/* Scroll reveal ---------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* The sticker variant: scales up and straightens, like being pressed on. */
+.reveal-pop {
+  opacity: 0;
+  transform: scale(0.9) rotate(-2.5deg);
+  transition:
+    opacity 0.55s var(--ease-pop),
+    transform 0.55s var(--ease-pop);
+}
+
+.reveal-pop.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Micro-animations -------------------------------------------------- */
+/* Sparkles breathe. Slowly, out of phase (set --twinkle-delay), and only
+   a little — punctuation, not fireworks. */
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(0.7) rotate(20deg);
+    opacity: 0.65;
+  }
+}
+
+.twinkle {
+  animation: twinkle 3.4s ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+  transform-origin: center;
+}
+
+/* A doodle shakes itself awake when you hover the card it lives on. */
+@keyframes wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(6deg) scale(1.06);
+  }
+  60% {
+    transform: rotate(-5deg);
+  }
+  85% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.group:hover .wiggle-on-hover {
+  animation: wiggle 0.6s var(--ease-pop);
+}
+
+/* One-shot pop for things that appear after an action (the thank-you). */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) rotate(-1.5deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pop-in {
+  animation: pop-in 0.45s var(--ease-pop) both;
+}
+
+/* Dropdown and mobile menu arrive instead of appearing. */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.4rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.menu-in {
+  animation: menu-in 0.22s var(--ease-pop) both;
+  transform-origin: top left;
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sheet-in {
+  animation: sheet-in 0.3s var(--ease-pop) both;
+}
+
+/* The play button's radiating ring — an invitation, not an alarm. */
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 3px solid var(--color-mint);
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* Scroll-driven animations ------------------------------------------
+   Pure CSS, tied to scroll position rather than time. Wrapped in
+   @supports so browsers without scroll timelines simply get the
+   static version — nothing breaks, nothing jumps. */
+
+/* thin brand line under the top of the page showing reading progress */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 3px;
+  background: var(--color-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress-x linear both;
+    animation-timeline: scroll(root);
+  }
+
+  /* the ghost word behind the donate section slides sideways as you
+     scroll past it — the repeated-word posters, set in motion */
+  .drift-on-scroll {
+    animation: drift-x linear both;
+    animation-timeline: view();
+  }
+
+  /* slow vertical drift for background doodles — a light parallax */
+  .drift-up {
+    animation: drift-y linear both;
+    animation-timeline: view();
+  }
+
+  /* the timeline's blue line draws itself down the page as you read */
+  .grow-line {
+    transform-origin: top;
+    animation: grow-y linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 75%;
+  }
+}
+
+@keyframes progress-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes drift-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-5%);
+  }
+}
+
+@keyframes drift-y {
+  from {
+    transform: translateY(1.5rem);
+  }
+  to {
+    transform: translateY(-2.5rem);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* A doodle stroke that draws itself in when it scrolls into view --- */
+.draw-path {
+  stroke-dasharray: var(--len, 1200);
+  stroke-dashoffset: var(--len, 1200);
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.is-in .draw-path,
+.reveal.is-in.draw-path {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .reveal-pop {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .twinkle,
+  .group:hover .wiggle-on-hover,
+  .pop-in,
+  .menu-in,
+  .sheet-in,
+  .pulse-ring::after,
+  .scroll-progress,
+  .drift-on-scroll,
+  .drift-up,
+  .grow-line {
+    animation: none;
+  }
+  .reveal .tag-stamp,
+  .reveal-pop .tag-stamp {
+    rotate: -1.1deg;
+    scale: 1;
+    opacity: 1;
+    transition: none;
+  }
+  .draw-path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .marquee-track,
+  .strip-track {
+    animation: none !important;
+  }
+  /* the shadow still appears, but nothing moves */
+  .btn-pop,
+  .btn-pop:hover,
+  .btn-pop:active {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Marquee ---------------------------------------------------------- */
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+/* like the alumni strip, it waits while you read it */
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Alumni image strip ----------------------------------------------- */
+.strip-track {
+  animation: strip 55s linear infinite;
+}
+
+.strip:hover .strip-track {
+  animation-play-state: paused;
+}
+
+@keyframes strip {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Underline that draws in on hover --------------------------------- */
+.link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-draw:hover {
+  background-size: 100% 2px;
+}
+
+:where(a, button, input):focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
