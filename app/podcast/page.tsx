@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Reveal } from '@/components/reveal'
-import { Squiggle, Sparkle } from '@/components/doodles'
+import { EpisodeList } from '@/components/episode-list'
+import { Arrow, Play, Squiggle } from '@/components/doodles'
 import { podcastPage } from '@/content/site'
 
 export const metadata = { title: 'Peekaboo by allyours — Podcast' }
@@ -23,16 +24,10 @@ export default function Page() {
         <section className="relative overflow-hidden px-5 pb-16 pt-36 sm:px-8 sm:pt-44">
           <div aria-hidden className="mm-pattern pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[110rem]">
-            <Reveal variant="pop">
-              <span className="pill inline-block -rotate-1 bg-brand text-white">{p.kicker}</span>
-            </Reveal>
             <Reveal delay={80}>
-              <p className="mt-6 text-sm text-ink-60">
-                Full name: <span className="marker text-xl text-magenta-ink">Peekaboo by allyours</span>
-              </p>
-              <h1 className="display mt-2 max-w-[14ch]">
+              <h1 className="display max-w-[14ch]">
                 {p.title.replace(p.emphasis, '')}
-                <span className="marker text-brand">{p.emphasis}</span>
+                <span className="tag tag-stamp bg-mint text-ink">{p.emphasis}</span>
               </h1>
             </Reveal>
             <Reveal delay={160}>
@@ -41,7 +36,7 @@ export default function Page() {
               </p>
               {/* where to listen */}
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <span className="marker -rotate-2 text-xl text-ink-60">listen on</span>
+                <span className="pill -rotate-1 bg-brand text-white">listen on</span>
                 {p.listen.map((l) => (
                   <Link
                     key={l.label}
@@ -65,14 +60,12 @@ export default function Page() {
               <article className="group relative overflow-hidden rounded-[2.5rem] bg-brand p-7 text-white sm:p-12 lg:p-16">
                 <Squiggle
                   className="pointer-events-none absolute -right-20 -top-16 h-auto w-[26rem] text-white/15 sm:w-[32rem]"
-                  strokeWidth={9}
                 />
-                <Sparkle className="twinkle pointer-events-none absolute bottom-10 right-12 hidden h-6 w-6 text-mint sm:block" />
 
                 <div className="relative grid gap-10 lg:grid-cols-12">
                   <div className="lg:col-span-8">
                     <span className="pill -rotate-1 bg-white text-brand">{p.latest.tag}</span>
-                    <h2 className="mt-7 text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
+                    <h2 className="mt-7 text-4xl font-extrabold tracking-[-0.025em] sm:text-6xl">
                       {p.latest.title}
                     </h2>
                     <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-white/75">
@@ -86,7 +79,7 @@ export default function Page() {
                         className="btn-pop inline-flex items-center gap-3 rounded-full bg-mint px-7 py-4 text-[0.95rem] font-semibold text-ink"
                       >
                         <span className="grid h-5 w-5 place-items-center rounded-full bg-ink text-[0.6rem] text-mint">
-                          ▶
+                          <Play />
                         </span>
                         {p.latest.cta.label}
                       </Link>
@@ -128,34 +121,9 @@ export default function Page() {
                   members-only.
                 </p>
               </Reveal>
+              {/* hovering a row floats its thumbnail card alongside the cursor */}
               <div className="lg:col-span-7 lg:col-start-6">
-                <ul>
-                  {p.archive.map((ep, i) => (
-                    <Reveal key={ep.no} delay={i * 60} as="li">
-                      <Link
-                        href={p.listen[0].href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-start gap-5 border-t border-rule py-6 transition-colors last:border-b hover:bg-card"
-                      >
-                        <span className="mt-1 font-mono text-xs text-ink-30 transition-colors group-hover:text-brand">
-                          {ep.no}
-                        </span>
-                        <span className="flex-1 transition-transform duration-300 ease-[var(--ease-pop)] group-hover:translate-x-1.5">
-                          <span className="block text-xl tracking-[-0.02em] transition-colors group-hover:text-brand">
-                            {ep.title}
-                          </span>
-                          <span className="mt-1 block text-sm text-ink-60">
-                            {ep.guest} · {ep.length}
-                          </span>
-                        </span>
-                        <span className="mt-1 text-ink-30 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand">
-                          →
-                        </span>
-                      </Link>
-                    </Reveal>
-                  ))}
-                </ul>
+                <EpisodeList episodes={p.archive} href={p.listen[0].href} external />
               </div>
             </div>
           </div>
@@ -217,7 +185,7 @@ export default function Page() {
                   className="btn-pop mt-8 inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
                 >
                   {p.suggest.cta.label}
-                  <span>→</span>
+                  <span><Arrow /></span>
                 </Link>
               </div>
             </Reveal>

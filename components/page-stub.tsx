@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { SiteHeader } from './site-header'
 import { SiteFooter } from './site-footer'
+import { Arrow } from './doodles'
 
 /**
  * A placeholder for the pages in the site map that aren't built yet.
@@ -11,12 +12,11 @@ import { SiteFooter } from './site-footer'
  * in that page's file with the real layout.
  */
 export function PageStub({
-  kicker,
   title,
   body,
   sections,
 }: {
-  kicker: string
+  kicker?: string
   title: string
   body: string
   sections: string[]
@@ -26,8 +26,7 @@ export function PageStub({
       <SiteHeader />
       <main id="main" className="px-5 pb-32 pt-36 sm:px-8 sm:pt-44">
         <div className="mx-auto max-w-[110rem]">
-          <span className="pill -rotate-1 bg-brand text-white">{kicker}</span>
-          <h1 className="display mt-7 max-w-[14ch]">{title}</h1>
+          <h1 className="display max-w-[14ch]">{title}</h1>
           <p className="mt-9 max-w-[46ch] text-lg leading-relaxed text-ink-60 sm:text-xl">{body}</p>
 
           <div className="mt-16 border-t border-rule pt-10">
@@ -51,7 +50,7 @@ export function PageStub({
             href="/"
             className="link-draw mt-12 inline-block text-[0.95rem] font-semibold text-brand"
           >
-            ← Back to the home page
+            <Arrow className="rotate-180" /> Back to the home page
           </Link>
         </div>
       </main>

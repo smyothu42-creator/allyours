@@ -108,7 +108,7 @@ export function ProjectGrid() {
                         <span className={`h-1.5 w-1.5 rounded-full ${c.dot}`} />
                         {w.kind}
                       </span>
-                      <span className="font-mono text-ink-30">
+                      <span className="font-mono font-semibold text-ink-30">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                     </span>

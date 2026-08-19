@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             {/* the lockup again: script "all", grotesk "yours" */}
-            <Link href="/" className="text-5xl font-semibold tracking-[-0.05em] lowercase">
+            <Link href="/" className="text-5xl font-semibold tracking-[-0.03em] lowercase">
               <span className="marker mr-1 text-mint">all</span>
               <span>yours</span>
             </Link>
@@ -36,7 +36,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col gap-4 border-t border-paper/15 pt-7 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative mt-20 flex flex-col gap-4 border-t border-paper/15 pt-7 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-paper/40">{footer.legal}</p>
           <p className="text-sm text-paper/40">
             <span className="marker text-2xl text-mint">All of it is yours.</span>

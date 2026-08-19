@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { hero } from '@/content/site'
 import { Reveal } from './reveal'
 import { CountUp } from './count-up'
-import { Squiggle, ArrowCurve, Sparkle, Underline } from './doodles'
+import { Arrow, ArrowCurve } from './doodles'
 
 /**
  * The hero has two jobs from the site map: say who allyours is, and push
@@ -18,41 +18,19 @@ export function Hero() {
       {/* Burmese character texture, very faint */}
       <div aria-hidden className="mm-pattern pointer-events-none absolute inset-0" />
 
-      {/* The brand mark: one continuous marker loop, drawn in as you arrive.
-          Sits clear of the headline column and low enough to miss the header. */}
-      <Reveal
-        delay={200}
-        className="pointer-events-none absolute right-2 top-28 hidden w-[22rem] text-brand/40 lg:block lg:w-[27rem] xl:right-16 xl:w-[32rem]"
-      >
-        {/* the wrapper drifts slowly with the scroll — a light parallax */}
-        <div className="drift-up">
-          <Squiggle className="h-auto w-full" strokeWidth={9} />
-        </div>
-      </Reveal>
-
       <div className="relative mx-auto max-w-[110rem]">
-        <Reveal variant="pop">
-          {/* solid, like the ENG/MM tag — tinted pills with status dots are
-              template furniture, not brand */}
-          <span className="pill inline-block -rotate-1 bg-brand text-white">{hero.eyebrow}</span>
-        </Reveal>
-
-        <h1 className="display mt-8">
+        <h1 className="display">
           {hero.headline.map((line, i) => (
             <Reveal key={line} delay={i * 90}>
               <span className="block pb-[0.06em]">
                 {line.split(' ').map((word, j) => {
                   const clean = word.replace(/[^\w]/g, '')
                   return clean === hero.emphasis ? (
-                    // the emphasised word: marker script, brand blue, with a
-                    // hand-drawn underline that draws itself in. The trailing
-                    // space sits OUTSIDE the inline-block, or the next word
-                    // butts straight up against it.
+                    // the emphasised word: the stamp tag, like every other
+                    // headline highlight on the site. The trailing space sits
+                    // OUTSIDE the tag, or the next word butts up against it.
                     <span key={j}>
-                      <span className="relative inline-block pr-4 text-brand sm:pr-6">
-                        <span className="marker">{word}</span>
-                        <Underline className="absolute -bottom-2 left-0 h-3 w-[calc(100%-1rem)] text-brand sm:w-[calc(100%-1.5rem)]" />
-                      </span>{' '}
+                      <span className="tag tag-stamp bg-mint text-ink">{word}</span>{' '}
                     </span>
                   ) : (
                     <span key={j}>{word} </span>
@@ -75,7 +53,7 @@ export function Hero() {
                 className="btn-pop group inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
               >
                 {hero.primary.label}
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
               </Link>
               <Link
                 href={hero.secondary.href}
@@ -111,7 +89,7 @@ export function Hero() {
                     i % 2 ? 'hover:rotate-[0.7deg]' : 'hover:-rotate-[0.7deg]'
                   } ${tone}`}
                 >
-                  <dt className="text-4xl font-extrabold tracking-[-0.045em] sm:text-5xl">
+                  <dt className="text-4xl font-extrabold tracking-[-0.028em] sm:text-5xl">
                     <CountUp value={f.value} />
                   </dt>
                   <dd className="mt-1.5 text-sm font-medium text-ink-60">{f.label}</dd>
@@ -120,11 +98,6 @@ export function Hero() {
             )
           })}
         </dl>
-
-        <Sparkle
-          aria-hidden
-          className="twinkle pointer-events-none absolute right-[38%] top-1 hidden h-6 w-6 text-magenta lg:block"
-        />
       </div>
     </section>
   )

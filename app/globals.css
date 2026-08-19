@@ -32,10 +32,16 @@
   --color-mint-ink: #04795a;
   --color-butter: #ffd447; /* Donate */
 
-  /* set by next/font in layout.tsx, with a clean fallback stack */
+  /* Set by next/font in layout.tsx. The fallbacks are Helvetica-family
+     greys rather than a rounded UI face, so that on the split second
+     before Neue Haas loads — and for the arrows and symbols it has no
+     glyphs for — the substitute is the same kind of grotesk. */
   --font-sans:
-    var(--font-sans-face), ui-rounded, 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-marker: var(--font-marker-face), 'Bradley Hand', 'Comic Sans MS', cursive;
+    var(--font-sans-face), 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  /* Ligema first, then Caveat for the glyphs Ligema does not contain
+     (punctuation and digits) — see the note in layout.tsx. */
+  --font-marker:
+    var(--font-marker-face), var(--font-marker-fallback), 'Bradley Hand', cursive;
 
   --text-display: clamp(2.75rem, 8.5vw, 8rem);
   --text-section: clamp(2rem, 5vw, 4.25rem);
@@ -79,19 +85,22 @@ body::after {
 }
 
 /* Type ------------------------------------------------------------- */
-/* 800, not 700 — the type on the inspiration board is unapologetically
-   chunky, and at display sizes Outfit's bold reads a touch thin. */
+/* Weight 800 maps to Neue Haas Black — the type on the inspiration board
+   is unapologetically chunky.
+   Tracking is deliberately looser than it was under Outfit: Neue Haas
+   Display is drawn tight already, and negative letter-spacing shrinks the
+   word spaces too, which ran "We make room" together into one word. */
 .display {
   font-size: var(--text-display);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
+  line-height: 0.94;
+  letter-spacing: -0.022em;
   font-weight: 800;
 }
 
 .section-title {
   font-size: var(--text-section);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  line-height: 1;
+  letter-spacing: -0.018em;
   font-weight: 800;
 }
 
@@ -99,11 +108,20 @@ body::after {
    Spark", so one word per headline gets it and no more. */
 .marker {
   font-family: var(--font-marker);
-  font-weight: 700;
+  /* Ligema ships one weight; asking for 700 would make the browser fake a
+     bold and thicken the strokes unevenly. */
+  font-weight: 400;
   letter-spacing: 0;
-  /* the script sits small next to a grotesk, so it needs a size bump */
-  font-size: 1.15em;
-  line-height: 0.9;
+  /* Ligema renders SMALLER than Neue Haas at the same nominal size: measured
+     on the page, its cap height is 0.727 of Neue Haas Black's and its x-height
+     0.84 — so a 1em marker word next to a headline reads visibly undersized.
+     Cap heights match at 1.375em, but the metric match alone still looks small,
+     because Ligema is a light monoline sitting against a Black grotesk and thin
+     strokes recede. 1.40 is where the two read as the same size side by side
+     (checked against "Myanmar voices." — at 1.46 the script starts to look
+     bigger than the sans). Nominal size is larger; optical size matches. */
+  font-size: 1.40em;
+  line-height: 0.95;
 }
 
 /* Pill badge — the "ENG / MM" tag and the little "refined curves"
@@ -116,8 +134,10 @@ body::after {
   gap: 0.5rem;
   border-radius: 999px;
   padding: 0.4rem 0.95rem;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-family: var(--font-marker);
+  font-size: 1.6rem;
+  line-height: 1;
+  font-weight: 400;
   letter-spacing: 0.01em;
   text-transform: lowercase;
 }
@@ -225,25 +245,6 @@ body::after {
 }
 
 /* Micro-animations -------------------------------------------------- */
-/* Sparkles breathe. Slowly, out of phase (set --twinkle-delay), and only
-   a little — punctuation, not fireworks. */
-@keyframes twinkle {
-  0%,
-  100% {
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    transform: scale(0.7) rotate(20deg);
-    opacity: 0.65;
-  }
-}
-
-.twinkle {
-  animation: twinkle 3.4s ease-in-out infinite;
-  animation-delay: var(--twinkle-delay, 0s);
-  transform-origin: center;
-}
-
 /* A doodle shakes itself awake when you hover the card it lives on. */
 @keyframes wiggle {
   0% {
@@ -440,7 +441,6 @@ body::after {
     transform: none;
     transition: none;
   }
-  .twinkle,
   .group:hover .wiggle-on-hover,
   .pop-in,
   .menu-in,

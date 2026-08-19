@@ -2,7 +2,9 @@ import Link from 'next/link'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { Reveal } from '@/components/reveal'
-import { Sparkle } from '@/components/doodles'
+import { Character } from '@/components/character'
+import { StoryTimeline } from '@/components/story-timeline'
+import { Arrow, Play } from '@/components/doodles'
 import { aboutPage } from '@/content/site'
 
 export const metadata = { title: 'About — allyours' }
@@ -23,13 +25,10 @@ export default function Page() {
         <section className="relative overflow-hidden px-5 pb-16 pt-36 sm:px-8 sm:pt-44">
           <div aria-hidden className="mm-pattern pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[110rem]">
-            <Reveal variant="pop">
-              <span className="pill inline-block -rotate-1 bg-mint text-ink">{p.kicker}</span>
-            </Reveal>
             <Reveal delay={80}>
-              <h1 className="display mt-7 max-w-[16ch]">
-                <span className="marker text-brand">{p.emphasis}</span>
+              <h1 className="display max-w-[16ch]">
                 {p.title.replace(p.emphasis, '')}
+                <span className="tag tag-stamp bg-mint text-ink">{p.emphasis}</span>
               </h1>
             </Reveal>
             <Reveal delay={160}>
@@ -70,36 +69,10 @@ export default function Page() {
                 <span className="pill -rotate-1 bg-brand text-white">Story</span>
                 <h2 className="section-title mt-5">{p.storyTitle}</h2>
               </Reveal>
-              <div className="relative lg:col-span-7 lg:col-start-6">
-                {/* the line itself: a faint base, and a brand-blue line that
-                    draws itself down the page as you scroll through the story
-                    (browsers without scroll timelines just show it complete) */}
-                <span aria-hidden className="absolute bottom-2 left-0 top-2 w-0.5 bg-ink/10" />
-                <span aria-hidden className="grow-line absolute bottom-2 left-0 top-2 w-0.5 bg-brand" />
-                <ol>
-                  {p.story.map((s, i) => (
-                    <Reveal
-                      key={s.year}
-                      as="li"
-                      delay={i * 90}
-                      className="relative pb-10 pl-8 last:pb-0"
-                    >
-                      {/* the dot on the line */}
-                      <span
-                        aria-hidden
-                        className={`absolute -left-[5px] top-1 h-3 w-3 rounded-full ${
-                          i === p.story.length - 1 ? 'bg-brand' : 'bg-ink/30'
-                        }`}
-                      />
-                      <span className="marker inline-block -rotate-2 text-2xl text-brand">
-                        {s.year}
-                      </span>
-                      <p className="mt-2 max-w-[52ch] text-lg leading-relaxed text-ink-60">
-                        {s.text}
-                      </p>
-                    </Reveal>
-                  ))}
-                </ol>
+              {/* scroll-driven: the blue line grows as you scroll, and each
+                  entry wakes up as the line reaches it */}
+              <div className="lg:col-span-7 lg:col-start-6">
+                <StoryTimeline items={p.story} />
               </div>
             </div>
           </div>
@@ -177,10 +150,9 @@ export default function Page() {
           <div className="mx-auto max-w-[110rem]">
             <Reveal>
               <div className="relative grid aspect-video place-items-center overflow-hidden rounded-[2.5rem] bg-ink text-white sm:aspect-21/9">
-                <Sparkle className="twinkle pointer-events-none absolute left-10 top-10 h-6 w-6 text-mint" />
                 <div className="text-center">
                   <span className="pulse-ring relative mx-auto grid h-20 w-20 place-items-center rounded-full bg-mint text-xl text-ink transition-transform duration-300 ease-[var(--ease-pop)] hover:scale-110">
-                    ▶
+                    <Play />
                   </span>
                   <p className="marker mt-6 text-3xl text-mint">{p.video.title}</p>
                   <p className="mt-2 text-sm text-white/60">{p.video.note}</p>
@@ -213,7 +185,7 @@ export default function Page() {
                           {r.label}
                         </span>
                         <span className="text-ink-30 transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-brand">
-                          ↓
+                          <Arrow className="rotate-90" />
                         </span>
                       </Link>
                     </Reveal>
@@ -230,6 +202,11 @@ export default function Page() {
             <Reveal>
               <div className="relative overflow-hidden rounded-[2.5rem] bg-brand p-7 text-white sm:p-12 lg:p-16">
                 <span aria-hidden className="tape left-10 top-6 hidden -rotate-6 sm:block" />
+                {/* the mascot extends the invitation in person */}
+                <Character
+                  pose="talking"
+                  className="pointer-events-none absolute right-12 top-9 hidden w-24 rotate-2 lg:block"
+                />
                 <h2 className="section-title max-w-[16ch]">
                   Be a part of <span className="marker text-mint">allyours.</span>
                 </h2>
@@ -247,7 +224,7 @@ export default function Page() {
                       >
                         {w.cta.label}
                         <span className="transition-transform duration-300 group-hover:translate-x-1">
-                          →
+                          <Arrow />
                         </span>
                       </Link>
                     </div>

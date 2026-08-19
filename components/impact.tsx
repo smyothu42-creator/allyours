@@ -2,11 +2,11 @@ import Link from 'next/link'
 import { impact } from '@/content/site'
 import { Reveal } from './reveal'
 import { CountUp } from './count-up'
+import { Arrow } from './doodles'
 
 /**
- * Goal 2, the money half. The stats come before the ask, and the tiers
- * name a concrete thing each amount buys — "one writer's 12 weeks" asks
- * far better than "any amount helps".
+ * Goal 2, the money half. The stats come before the ask — the numbers
+ * make the argument, then the button collects.
  */
 export function Impact() {
   return (
@@ -15,7 +15,7 @@ export function Impact() {
           barely-there outline type behind the heading */}
       <div
         aria-hidden
-        className="drift-on-scroll pointer-events-none absolute -top-4 left-0 hidden select-none whitespace-nowrap text-[9rem] font-extrabold leading-none tracking-[-0.04em] text-transparent lg:block"
+        className="drift-on-scroll pointer-events-none absolute -top-4 left-0 hidden select-none whitespace-nowrap text-[9rem] font-extrabold leading-none tracking-[-0.025em] text-transparent lg:block"
         style={{ WebkitTextStroke: '1px rgba(255,255,255,0.07)' }}
       >
         {Array(6).fill(impact.backdropWord).join(' ')}
@@ -42,7 +42,7 @@ export function Impact() {
                   i % 2 === 1 ? 'border-l border-white/15 pl-6' : ''
                 } lg:border-l lg:pl-6 ${i === 0 ? 'lg:border-l-0 lg:pl-0' : ''}`}
               >
-                <dt className="text-5xl font-bold tracking-[-0.05em] sm:text-6xl">
+                <dt className="text-5xl font-bold tracking-[-0.03em] sm:text-6xl">
                   <CountUp value={s.value} />
                 </dt>
                 <dd className="mt-3">
@@ -54,28 +54,6 @@ export function Impact() {
           ))}
         </dl>
 
-        {/* Tiers ------------------------------------------------------- */}
-        <div className="mt-16 grid gap-4 md:grid-cols-3">
-          {impact.tiers.map((t, i) => (
-            <Reveal key={t.amount} delay={i * 100}>
-              <Link
-                href={impact.primary.href}
-                className="group flex h-full flex-col justify-between rounded-3xl border border-white/15 p-7 transition-all duration-300 ease-[var(--ease-pop)] hover:-translate-y-1 hover:-rotate-[0.4deg] hover:border-butter hover:bg-white/5"
-              >
-                <span className="text-2xl font-semibold tracking-[-0.03em] text-butter sm:text-3xl">
-                  {t.amount}
-                </span>
-                <span className="mt-6 flex items-end justify-between gap-4">
-                  <span className="max-w-[26ch] leading-relaxed text-white/70">{t.buys}</span>
-                  <span className="text-white/40 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-butter">
-                    →
-                  </span>
-                </span>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-
         <Reveal delay={120}>
           <div className="mt-12 flex flex-wrap items-center gap-3">
             <Link
@@ -83,7 +61,7 @@ export function Impact() {
               className="btn-pop group inline-flex items-center gap-3 rounded-full bg-butter px-8 py-4 text-[0.95rem] font-bold text-ink [--pop-shadow:rgba(255,255,255,0.9)]"
             >
               {impact.primary.label}
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
             </Link>
             <Link
               href={impact.secondary.href}

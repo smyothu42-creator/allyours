@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { partner } from '@/content/site'
 import { Reveal } from './reveal'
+import { Arrow } from './doodles'
 
 /**
  * Goal 2, the organisation half. Partners want three things before they
@@ -25,7 +26,7 @@ export function Partner() {
               className="btn-pop group mt-9 inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
             >
               {partner.cta.label}
-              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
             </Link>
           </Reveal>
 
@@ -76,8 +77,8 @@ export function Partner() {
                       className="group flex items-center justify-between gap-4 border-t border-rule py-4 last:border-b"
                     >
                       <span className="text-[0.95rem]">{r.label}</span>
-                      <span className="text-ink-30 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand">
-                        ↓
+                      <span className="text-ink-30 transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-brand">
+                        <Arrow className="rotate-90" />
                       </span>
                     </Link>
                   </li>

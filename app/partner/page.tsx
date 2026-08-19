@@ -4,7 +4,8 @@ import { SiteFooter } from '@/components/site-footer'
 import { Reveal } from '@/components/reveal'
 import { CountUp } from '@/components/count-up'
 import { ContactForm } from '@/components/contact-form'
-import { Squiggle } from '@/components/doodles'
+import { Character } from '@/components/character'
+import { Arrow, Squiggle } from '@/components/doodles'
 import { partner, impact, partnerPage } from '@/content/site'
 
 export const metadata = { title: 'Partner — allyours' }
@@ -27,11 +28,8 @@ export default function Page() {
         <section className="relative overflow-hidden px-5 pb-20 pt-36 sm:px-8 sm:pt-44">
           <div aria-hidden className="mm-pattern pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[110rem]">
-            <Reveal variant="pop">
-              <span className="pill inline-block -rotate-1 bg-brand text-white">{p.kicker}</span>
-            </Reveal>
             <Reveal delay={80}>
-              <h1 className="display mt-7 max-w-[15ch]">
+              <h1 className="display max-w-[15ch]">
                 {p.title.split(p.emphasis)[0]}
                 <span className="tag tag-stamp bg-magenta text-ink">{p.emphasis}</span>
                 {p.title.split(p.emphasis)[1]}
@@ -46,7 +44,7 @@ export default function Page() {
                 className="btn-pop group mt-9 inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
               >
                 {p.cta.label}
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1"><Arrow /></span>
               </Link>
             </Reveal>
           </div>
@@ -98,7 +96,7 @@ export default function Page() {
                 return (
                   <Reveal key={s.label} variant="pop" delay={i * 90}>
                     <div className={`h-full rounded-3xl px-6 py-7 ${tone}`}>
-                      <dt className="text-4xl font-extrabold tracking-[-0.045em] sm:text-5xl">
+                      <dt className="text-4xl font-extrabold tracking-[-0.028em] sm:text-5xl">
                         <CountUp value={s.value} />
                       </dt>
                       <dd className="mt-1.5 text-sm font-medium text-ink-60">
@@ -148,7 +146,7 @@ export default function Page() {
                             {r.label}
                           </span>
                           <span className="text-ink-30 transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-brand">
-                            ↓
+                            <Arrow className="rotate-90" />
                           </span>
                         </Link>
                       </li>
@@ -167,9 +165,13 @@ export default function Page() {
               <div className="relative overflow-hidden rounded-[2.5rem] bg-brand p-7 text-white sm:p-12 lg:p-16">
                 <Squiggle
                   className="pointer-events-none absolute -right-24 -top-14 h-auto w-[28rem] text-white/12"
-                  strokeWidth={10}
                 />
                 <span aria-hidden className="tape left-10 top-6 hidden -rotate-6 sm:block" />
+                {/* the mascot sits in on the conversation */}
+                <Character
+                  pose="talking"
+                  className="pointer-events-none absolute -bottom-6 right-12 hidden w-32 -rotate-1 lg:block"
+                />
                 <div className="relative max-w-3xl">
                   <h2 className="section-title">
                     {p.contact.title.replace('conversation.', '')}

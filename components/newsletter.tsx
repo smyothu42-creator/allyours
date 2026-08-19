@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { newsletter } from '@/content/site'
 import { Reveal } from './reveal'
-import { Squiggle, Sparkle } from './doodles'
+import { Character } from './character'
+import { Squiggle } from './doodles'
 
 /**
  * Goal 3 lives here. Subscriber growth is the one awareness number a
@@ -24,12 +25,15 @@ export function Newsletter() {
           <div className="relative overflow-hidden rounded-[2.5rem] bg-brand px-7 py-16 text-white sm:px-14 sm:py-24">
             <Squiggle
               className="drift-up pointer-events-none absolute -left-24 -top-10 h-auto w-[28rem] text-white/12"
-              strokeWidth={10}
             />
-            <Sparkle className="twinkle pointer-events-none absolute right-10 top-12 h-8 w-8 text-mint" />
-            <Sparkle className="twinkle pointer-events-none absolute bottom-14 right-24 h-5 w-5 text-mint/70 [--twinkle-delay:1.4s]" />
             {/* the strip of washi tape from the brand's typeface sample card */}
             <span aria-hidden className="tape left-10 top-6 hidden -rotate-6 sm:block" />
+            {/* arms folded: "one email per cohort, nothing else" deserves
+                the mascot's most deadpan pose */}
+            <Character
+              pose="crossed"
+              className="pointer-events-none absolute -bottom-3 right-10 hidden w-24 -rotate-1 md:block lg:w-28"
+            />
 
             <div className="relative mx-auto max-w-3xl text-center">
               <span className="pill -rotate-1 bg-white text-brand">{newsletter.kicker}</span>

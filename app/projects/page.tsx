@@ -4,6 +4,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { Reveal } from '@/components/reveal'
 import { ProjectGrid } from '@/components/project-grid'
 import { projectsPage } from '@/content/site'
+import { Arrow } from '@/components/doodles'
 
 export const metadata = { title: 'Projects — allyours' }
 
@@ -22,13 +23,8 @@ export default function Page() {
         <section className="relative overflow-hidden px-5 pb-14 pt-36 sm:px-8 sm:pt-44">
           <div aria-hidden className="mm-pattern pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[110rem]">
-            <Reveal variant="pop">
-              <span className="pill inline-block -rotate-1 bg-magenta-ink text-white">
-                {p.kicker}
-              </span>
-            </Reveal>
             <Reveal delay={80}>
-              <h1 className="display mt-7 max-w-[16ch]">
+              <h1 className="display max-w-[16ch]">
                 {p.title.replace(p.emphasis, '')}
                 <span className="tag tag-stamp bg-mint text-ink">{p.emphasis}</span>
               </h1>
@@ -69,7 +65,7 @@ export default function Page() {
                   className="btn-pop mt-8 inline-flex items-center gap-3 rounded-full bg-mint px-7 py-4 text-[0.95rem] font-semibold text-ink [--pop-shadow:rgba(255,255,255,0.9)]"
                 >
                   {p.submit.cta.label}
-                  <span>→</span>
+                  <span><Arrow /></span>
                 </Link>
               </div>
             </Reveal>

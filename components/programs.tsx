@@ -1,32 +1,62 @@
+'use client'
+
 import Link from 'next/link'
+import { useRef } from 'react'
 import { programs } from '@/content/site'
 import { Reveal } from './reveal'
-import { Squiggle, Fork, Bulb, Spiral } from './doodles'
+import { Arrow, Squiggle } from './doodles'
 
 /**
- * Accent per program, written out in full — Tailwind only ships a class it
- * can see as a whole string, so `text-${x}` would silently produce nothing.
+ * The Peekaboo programs, as a horizontal rail of big cards — every cohort
+ * and pilot so far, ending with the two programs running now. Each card
+ * follows the big Peekaboo card design: solid colour, the brand ribbon as
+ * texture, a pill tag, a small meta table and one clear action. The rail
+ * scrolls natively (swipe, trackpad, wheel) and snaps card by card; the
+ * buttons under it drive the same scroll for mouse users.
  */
-const accent = {
-  brand: {
-    text: 'text-brand',
-    doodle: 'text-brand',
-    tint: 'bg-brand/10',
+
+// Accent per card, written out in full — Tailwind only ships a class it
+// can see as a whole string, so `bg-${x}` would silently produce nothing.
+const accents = [
+  {
+    card: 'bg-brand text-white',
+    ribbon: 'text-white/15',
+    pill: 'bg-white text-brand',
+    body: 'text-white/75',
+    rule: 'border-white/20',
+    metaKey: 'text-white/50',
+    cta: 'bg-mint text-ink',
   },
-  magenta: {
-    text: 'text-magenta-ink', // readable on the pale tint
-    doodle: 'text-magenta', // decorative, so the bright value is fine
-    tint: 'bg-magenta/12',
+  {
+    card: 'bg-magenta text-ink',
+    ribbon: 'text-white/30',
+    pill: 'bg-white text-magenta-ink',
+    body: 'text-ink/70',
+    rule: 'border-ink/15',
+    metaKey: 'text-ink/50',
+    cta: 'bg-white text-ink',
   },
-  mint: {
-    text: 'text-mint-ink',
-    doodle: 'text-mint',
-    tint: 'bg-mint/16',
+  {
+    card: 'bg-mint text-ink',
+    ribbon: 'text-white/40',
+    pill: 'bg-white text-mint-ink',
+    body: 'text-ink/70',
+    rule: 'border-ink/15',
+    metaKey: 'text-ink/50',
+    cta: 'bg-ink text-white',
   },
-} as const
+] as const
 
 export function Programs() {
-  const { peekaboo, specializations } = programs
+  const rail = useRef<HTMLDivElement>(null)
+
+  function scroll(dir: 1 | -1) {
+    const el = rail.current
+    if (!el) return
+    // one card (plus the gap) per click
+    const card = el.querySelector<HTMLElement>('[data-card]')
+    el.scrollBy({ left: dir * ((card?.offsetWidth ?? 480) + 20), behavior: 'smooth' })
+  }
 
   return (
     <section id="programs" className="px-5 py-24 sm:px-8 sm:py-32">
@@ -36,7 +66,7 @@ export function Programs() {
             <span className="pill -rotate-1 bg-magenta-ink text-white">{programs.kicker}</span>
             <h2 className="section-title mt-5">
               {/* black-on-pink, like the IdeaFest name labels */}
-              One program. <span className="tag tag-stamp bg-magenta text-ink">Two ways in.</span>
+              The Peekaboo <span className="tag tag-stamp bg-magenta text-ink">programs.</span>
             </h2>
           </Reveal>
           <Reveal delay={120} className="lg:col-span-5 lg:col-start-8 lg:self-end">
@@ -44,138 +74,90 @@ export function Programs() {
           </Reveal>
         </div>
 
-        {/* ── Peekaboo: the parent, deliberately the biggest thing here ── */}
+        {/* ── The rail ─────────────────────────────────────────────────── */}
         <Reveal delay={100}>
-          <article
-            id={peekaboo.id}
-            className="group relative mt-16 overflow-hidden rounded-[2.5rem] bg-brand p-7 text-white sm:mt-20 sm:p-12 lg:p-16"
+          {/* full-bleed: the rail spans the whole viewport so cards slide
+              off the screen edge instead of being cut at the container.
+              The padding puts the first card back on the content grid,
+              and scroll-padding keeps the snap aligned with it. */}
+          <div
+            ref={rail}
+            className="mx-[calc(50%-50vw)] mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-[calc(50vw-50%+1.25rem)] pb-2 scroll-px-[calc(50vw-50%+1.25rem)] sm:mt-16 sm:px-[calc(50vw-50%+2rem)] sm:scroll-px-[calc(50vw-50%+2rem)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {/* the marker loop again, this time as the card's own texture */}
-            <Squiggle
-              className="pointer-events-none absolute -right-20 -top-16 h-auto w-[26rem] text-white/15 transition-transform duration-700 group-hover:scale-105 sm:w-[32rem]"
-              strokeWidth={9}
-            />
-
-            <div className="relative grid gap-10 lg:grid-cols-12">
-              <div className="lg:col-span-7">
-                <span className="pill -rotate-1 bg-white text-brand">{peekaboo.tag}</span>
-
-                <h3 className="mt-7 text-6xl font-bold tracking-[-0.05em] sm:text-8xl lg:text-9xl">
-                  {peekaboo.name}
-                </h3>
-
-                <p className="mt-6 max-w-[44ch] text-lg leading-relaxed text-white/75">
-                  {peekaboo.description}
-                </p>
-
-                <div className="mt-9 flex flex-wrap items-center gap-3">
-                  <Link
-                    href={peekaboo.cta.href}
-                    className="btn-pop group/btn inline-flex items-center gap-3 rounded-full bg-mint px-7 py-4 text-[0.95rem] font-semibold text-ink"
-                  >
-                    {peekaboo.cta.label}
-                    <span className="transition-transform duration-300 group-hover/btn:translate-x-1">
-                      →
-                    </span>
-                  </Link>
-                  {peekaboo.links.map((l) => (
-                    <Link
-                      key={l.label}
-                      href={l.href}
-                      className="link-draw px-2 py-4 text-[0.95rem] text-white/65 transition-colors hover:text-white"
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <dl className="lg:col-span-4 lg:col-start-9 lg:self-end">
-                {peekaboo.meta.map((m) => (
-                  <div
-                    key={m.k}
-                    className="flex items-baseline justify-between gap-6 border-t border-white/20 py-3.5 last:border-b"
-                  >
-                    <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
-                      {m.k}
-                    </dt>
-                    <dd className="text-right text-[0.95rem]">{m.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </article>
-        </Reveal>
-
-        {/* ── The branch, drawn by hand rather than ruled ─────────────── */}
-        <Reveal className="relative hidden h-28 md:block">
-          <Fork className="h-full w-full text-ink-30" strokeWidth={3} />
-          {/* a hand-written aside, not a system label */}
-          <span className="marker absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 -rotate-2 bg-paper px-3 text-xl text-ink-60">
-            branches into
-          </span>
-        </Reveal>
-
-        {/* the phone version of the same idea: a short tick, no fork */}
-        <div aria-hidden className="relative h-14 md:hidden">
-          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-rule" />
-          <span className="marker absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-2 bg-paper px-3 text-lg text-ink-60">
-            branches into
-          </span>
-        </div>
-
-        {/* ── The two specializations ────────────────────────────────── */}
-        <div className="grid gap-5 md:grid-cols-2">
-          {specializations.map((s, i) => {
-            const c = accent[s.accent]
-            const Doodle = i === 0 ? Spiral : Bulb
-            return (
-              <Reveal key={s.id} delay={i * 120} as="article">
-                {/* borderless solid blocks, like the specimen cards — the
-                    hover is a sticker-ish tilt rather than a border change */}
-                <div
-                  id={s.id}
-                  className={`group relative flex h-full flex-col overflow-hidden rounded-[2rem] p-7 transition-transform duration-300 ease-[var(--ease-pop)] hover:-translate-y-1 hover:-rotate-[0.4deg] sm:p-10 ${c.tint}`}
+            {programs.cards.map((card, i) => {
+              const a = accents[i % accents.length]
+              return (
+                <article
+                  data-card
+                  key={card.name}
+                  className={`group relative flex w-[86vw] max-w-[30rem] shrink-0 snap-start flex-col overflow-hidden rounded-[2rem] p-7 sm:w-[30rem] sm:p-10 ${a.card}`}
                 >
-                  {/* the doodle shakes itself awake when you hover the card */}
-                  <Doodle
-                    className={`wiggle-on-hover pointer-events-none absolute right-7 top-7 h-16 w-16 opacity-60 ${c.doodle}`}
+                  <Squiggle
+                    className={`pointer-events-none absolute -right-16 -top-12 h-auto w-[22rem] transition-transform duration-700 group-hover:scale-105 ${a.ribbon}`}
                   />
 
-                  <span className={`pill w-fit bg-white ${c.text}`}>Specialization</span>
+                  <div className="relative flex h-full flex-col">
+                    <span className={`pill w-fit -rotate-1 ${a.pill}`}>{card.tag}</span>
 
-                  <h3 className="mt-5 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
-                    {s.name}
-                  </h3>
-                  <p className="mt-5 max-w-[38ch] leading-relaxed text-ink-60">{s.description}</p>
+                    <h3 className="mt-6 text-4xl font-bold tracking-[-0.03em] sm:text-5xl">
+                      {card.name}
+                    </h3>
+                    <p className={`mt-5 max-w-[40ch] leading-relaxed ${a.body}`}>
+                      {card.description}
+                    </p>
 
-                  <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2">
-                    {s.links.map((l) => (
-                      <li key={l.label}>
-                        <Link
-                          href={l.href}
-                          className="link-draw text-sm font-medium text-ink-60 transition-colors hover:text-ink"
+                    <dl className="mt-7">
+                      {card.meta.map((m) => (
+                        <div
+                          key={m.k}
+                          className={`flex items-baseline justify-between gap-6 border-t py-2.5 last:border-b ${a.rule}`}
                         >
-                          {l.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                          <dt
+                            className={`text-xs font-semibold uppercase tracking-[0.14em] ${a.metaKey}`}
+                          >
+                            {m.k}
+                          </dt>
+                          <dd className="text-right text-sm">{m.v}</dd>
+                        </div>
+                      ))}
+                    </dl>
 
-                  <Link
-                    href={s.cta.href}
-                    className={`mt-auto inline-flex w-fit items-center gap-2 pt-9 text-[0.95rem] font-semibold ${c.text}`}
-                  >
-                    {s.cta.label}
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </Link>
-                </div>
-              </Reveal>
-            )
-          })}
-        </div>
+                    <div className="mt-auto pt-8">
+                      <Link
+                        href={card.cta.href}
+                        className={`btn-pop inline-flex items-center gap-3 rounded-full px-6 py-3.5 text-[0.95rem] font-semibold ${a.cta}`}
+                      >
+                        {card.cta.label}
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+        </Reveal>
+
+        {/* ── Prev / next ──────────────────────────────────────────────── */}
+        <Reveal delay={140}>
+          <div className="mt-7 flex items-center gap-3">
+            <button
+              type="button"
+              aria-label="Previous program"
+              onClick={() => scroll(-1)}
+              className="grid h-11 w-11 place-items-center rounded-full border-2 border-ink text-ink transition-colors hover:bg-ink hover:text-paper"
+            >
+              <Arrow className="rotate-180" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next program"
+              onClick={() => scroll(1)}
+              className="grid h-11 w-11 place-items-center rounded-full border-2 border-ink text-ink transition-colors hover:bg-ink hover:text-paper"
+            >
+              <Arrow />
+            </button>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
