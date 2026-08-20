@@ -3,10 +3,10 @@ import { SiteFooter } from '@/components/site-footer'
 import { Hero } from '@/components/hero'
 import { Marquee } from '@/components/marquee'
 import { Programs } from '@/components/programs'
-import { Podcast } from '@/components/podcast'
+// import { Podcast } from '@/components/podcast' — section hidden for now
 import { Behind } from '@/components/behind'
 import { Impact } from '@/components/impact'
-import { Alumni } from '@/components/alumni'
+// import { Alumni } from '@/components/alumni' — section hidden for now
 import { Partner } from '@/components/partner'
 import { Newsletter } from '@/components/newsletter'
 
@@ -28,10 +28,10 @@ export default function HomePage() {
         <Hero />
         <Marquee />
         <Programs />
-        <Podcast />
+        {/* <Podcast /> — hidden for now, put back when the podcast page is ready */}
         <Behind />
         <Impact />
-        <Alumni />
+        {/* <Alumni /> — hidden for now, put back with the alumni showcase */}
         <Partner />
         <Newsletter />
       </main>

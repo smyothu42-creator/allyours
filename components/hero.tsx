@@ -57,6 +57,8 @@ export function Hero() {
               </Link>
               <Link
                 href={hero.secondary.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="link-draw inline-flex items-center gap-2 px-2 py-4 text-[0.95rem] font-medium text-ink-60 transition-colors hover:text-brand"
               >
                 {hero.secondary.label}

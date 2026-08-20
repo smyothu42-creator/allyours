@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { partner } from '@/content/site'
 import { Reveal } from './reveal'
+import { PartnerLogos } from './partner-logos'
 import { Arrow } from './doodles'
 
 // each benefit card gets its own accent from the brand palette
@@ -35,6 +36,8 @@ export function Partner() {
 
             <Link
               href={partner.cta.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-pop group mt-9 inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
             >
               {partner.cta.label}
@@ -68,30 +71,21 @@ export function Partner() {
           </div>
         </div>
 
-        {/* Current partners + transparency — two paper sheets ------------ */}
-        <div className="mt-16 grid gap-5 sm:mt-20 lg:grid-cols-12">
-          <Reveal delay={80} className="lg:col-span-7">
-            <div className="h-full rounded-[2rem] bg-card p-7 shadow-[0.35rem_0.35rem_0_rgba(16,16,20,0.06)] sm:p-9">
-              <span className="pill -rotate-1 bg-mint text-ink">Current partners</span>
-              {/* Logo slots. Drop a real logo image into each box when you
-                  have one — the empty frames read as "coming" rather than
-                  as a list of words. */}
-              <ul className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {partner.current.map((p) => (
-                  <li
-                    key={p}
-                    className="grid h-20 place-items-center rounded-xl border-2 border-dashed border-rule px-4 text-center text-sm text-ink-30 transition-colors hover:border-brand/40 hover:text-ink-60"
-                  >
-                    {p}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 text-sm text-ink-30">Your logo could sit here next cohort.</p>
+        {/* Current partners — one wide paper sheet, like the report page */}
+        <Reveal delay={80} className="mt-16 sm:mt-20">
+          <div className="rounded-[2rem] bg-card p-7 shadow-[0.35rem_0.35rem_0_rgba(16,16,20,0.06)] sm:p-9 lg:p-12">
+            <span className="pill -rotate-1 bg-mint text-ink">Current partners</span>
+            <div className="mt-9">
+              <PartnerLogos />
             </div>
-          </Reveal>
+            <p className="mt-10 text-sm text-ink-30">Your logo could sit here next cohort.</p>
+          </div>
+        </Reveal>
 
-          <Reveal delay={160} className="lg:col-span-5">
-            <div id="reports" className="h-full rounded-[2rem] bg-card p-7 shadow-[0.35rem_0.35rem_0_rgba(16,16,20,0.06)] sm:p-9">
+        {/* Transparency ------------------------------------------------- */}
+        <div className="mt-5">
+          <Reveal delay={160}>
+            <div id="reports" className="rounded-[2rem] bg-card p-7 shadow-[0.35rem_0.35rem_0_rgba(16,16,20,0.06)] sm:p-9">
               <span className="pill -rotate-1 bg-magenta-ink text-white">Transparency</span>
               <p className="mt-5 max-w-[36ch] text-[0.95rem] leading-relaxed text-ink-60">
                 Every cohort ends with a written report. Read what past funding did:
@@ -101,11 +95,14 @@ export function Partner() {
                   <li key={r.label}>
                     <Link
                       href={r.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="group flex items-center justify-between gap-4 border-t border-rule py-4 last:border-b"
                     >
                       <span className="text-[0.95rem] font-semibold">{r.label}</span>
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-paper-2 text-ink-60 transition-all duration-300 ease-[var(--ease-pop)] group-hover:translate-y-0.5 group-hover:bg-brand group-hover:text-white">
-                        <Arrow className="rotate-90" />
+                      {/* same ringed arrow as the Events & showcase list */}
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-rule text-ink-60 transition-all duration-300 ease-[var(--ease-pop)] group-hover:-rotate-45 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+                        <Arrow />
                       </span>
                     </Link>
                   </li>

@@ -489,6 +489,35 @@ body::after {
   }
 }
 
+/* Partner logo coin-spin ------------------------------------------- */
+/* Each logo rests, then does one full rotateY like a flipped coin.
+   Delays are staggered per tile inline so the row ripples instead of
+   flipping in unison. */
+.logo-spin {
+  animation: logo-spin 9s ease-in-out infinite;
+  will-change: transform;
+  backface-visibility: visible;
+}
+
+@media (hover: hover) {
+  .logo-spin:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes logo-spin {
+  0%,
+  74% {
+    transform: rotateY(0deg);
+  }
+  87% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
 /* Underline that draws in on hover --------------------------------- */
 .link-draw {
   background-image: linear-gradient(currentColor, currentColor);

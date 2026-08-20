@@ -6,13 +6,35 @@ import { ProjectGrid } from '@/components/project-grid'
 import { projectsPage } from '@/content/site'
 import { Arrow } from '@/components/doodles'
 
-export const metadata = { title: 'Projects — allyours' }
+import { ComingSoon } from '@/components/coming-soon'
+
+export const metadata = { title: 'Projects | allyours' }
+
+// Flip to false when the full archive below is ready to show.
+const COMING_SOON = true
+
+export default function Page() {
+  if (COMING_SOON) {
+    return (
+      <ComingSoon
+        kicker="Projects"
+        title="The archive opens soon."
+        emphasis="soon."
+        body={
+          'We are putting the full archive of cohort work together, writing from Literature ' +
+          'Arts, visual work from Design Studies. Check back shortly.'
+        }
+      />
+    )
+  }
+  return <ProjectsPageFull />
+}
 
 /**
  * The full archive of cohort work, with working filters (specialization
  * and cohort), plus the door for alumni to add their own.
  */
-export default function Page() {
+function ProjectsPageFull() {
   const p = projectsPage
 
   return (
@@ -62,6 +84,8 @@ export default function Page() {
                 </p>
                 <Link
                   href={p.submit.cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-pop mt-8 inline-flex items-center gap-3 rounded-full bg-mint px-7 py-4 text-[0.95rem] font-semibold text-ink [--pop-shadow:rgba(255,255,255,0.9)]"
                 >
                   {p.submit.cta.label}

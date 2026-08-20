@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal'
 import { Arrow } from '@/components/doodles'
 import { mentorsPage } from '@/content/site'
 
-export const metadata = { title: 'Mentors — allyours' }
+export const metadata = { title: 'Mentors | allyours' }
 
 // one accent set per card, cycling through the brand palette
 const tones = [
@@ -100,9 +100,12 @@ export default function Page() {
                       </div>
                     </div>
 
-                    {/* the receipts: cohorts run, projects mentored -------- */}
+                    {/* the receipts: cohorts run, projects mentored — the
+                        whole block stays hidden until a mentor has either */}
+                    {(m.cohorts.length > 0 || m.projects.length > 0) && (
                     <div className="mt-7 border-t border-rule pt-6">
                       <div className="flex flex-wrap items-baseline gap-x-6 gap-y-4">
+                        {m.cohorts.length > 0 && (
                         <div>
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-30">
                             Cohorts
@@ -115,6 +118,8 @@ export default function Page() {
                             ))}
                           </div>
                         </div>
+                        )}
+                        {m.projects.length > 0 && (
                         <div className="min-w-0 flex-1">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-30">
                             Projects mentored
@@ -135,8 +140,10 @@ export default function Page() {
                             ))}
                           </ul>
                         </div>
+                        )}
                       </div>
                     </div>
+                    )}
                   </article>
                 </Reveal>
               )
@@ -159,6 +166,8 @@ export default function Page() {
                 </p>
                 <Link
                   href={p.join.cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-pop mt-8 inline-flex items-center gap-3 rounded-full bg-mint px-7 py-4 text-[0.95rem] font-semibold text-ink [--pop-shadow:rgba(255,255,255,0.9)]"
                 >
                   {p.join.cta.label}

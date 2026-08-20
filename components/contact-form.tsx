@@ -16,7 +16,7 @@ export function ContactForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
-    const subject = `Partnership — ${data.get('org') || data.get('name') || 'hello'}`
+    const subject = `Partnership: ${data.get('org') || data.get('name') || 'hello'}`
     const body =
       `Name: ${data.get('name')}\n` +
       `Organisation: ${data.get('org')}\n` +
@@ -66,7 +66,7 @@ export function ContactForm() {
         </button>
         {sent && (
           <p className="pop-in text-white/80">
-            <span className="marker mr-1 text-xl text-mint">Off it goes</span> — finish it in
+            <span className="marker mr-1 text-xl text-mint">Off it goes</span>, finish it in
             your email app.
           </p>
         )}

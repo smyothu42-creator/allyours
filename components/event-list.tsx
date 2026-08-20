@@ -28,6 +28,9 @@ export type EventItem = {
   kind: 'Current' | 'Previous'
   title: string
   description: string
+  // the full story, shown only in the pop-up; the list row keeps the
+  // one-line description
+  details?: string
   href: string
   image?: string
 }
@@ -271,7 +274,9 @@ export function EventList({ events }: { events: EventItem[] }) {
               <h3 className="mt-4 text-3xl font-bold tracking-[-0.025em] sm:text-4xl">
                 {opened.title}
               </h3>
-              <p className="mt-4 max-w-[52ch] leading-relaxed text-ink-60">{opened.description}</p>
+              <p className="mt-4 max-w-[52ch] leading-relaxed text-ink-60">
+                {opened.details ?? opened.description}
+              </p>
 
               <div className="mt-7">
                 <Link

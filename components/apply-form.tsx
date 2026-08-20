@@ -17,7 +17,7 @@ export function ApplyForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
-    const subject = `Peekaboo application — ${data.get('name') || 'hello'}`
+    const subject = `Peekaboo application: ${data.get('name') || 'hello'}`
     const body =
       `Name: ${data.get('name')}\n` +
       `Email: ${data.get('email')}\n` +
@@ -79,7 +79,7 @@ export function ApplyForm() {
       <div className="sm:col-span-2">
         <label htmlFor="ap-work" className="mb-2 block text-sm font-medium text-white/80">
           {apply.workLabel}{' '}
-          <span className="font-normal text-white/50">— {apply.workHint}</span>
+          <span className="font-normal text-white/50">{apply.workHint}</span>
         </label>
         <textarea id="ap-work" name="work" rows={5} required className={inputClass} />
       </div>
@@ -93,7 +93,7 @@ export function ApplyForm() {
         </button>
         {sent && (
           <p className="pop-in text-white/80">
-            <span className="marker mr-1 text-xl text-mint">Off it goes</span> — finish it in
+            <span className="marker mr-1 text-xl text-mint">Off it goes</span>, finish it in
             your email app.
           </p>
         )}

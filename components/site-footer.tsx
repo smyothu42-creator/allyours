@@ -24,6 +24,8 @@ export function SiteFooter() {
                     <li key={l.label}>
                       <Link
                         href={l.href}
+                        target={l.href.startsWith('http') ? '_blank' : undefined}
+                        rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                         className="link-draw text-[0.95rem] text-paper/70 transition-colors hover:text-paper"
                       >
                         {l.label}

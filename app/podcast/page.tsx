@@ -6,14 +6,38 @@ import { EpisodeList } from '@/components/episode-list'
 import { Arrow, Play, Squiggle } from '@/components/doodles'
 import { podcastPage } from '@/content/site'
 
-export const metadata = { title: 'Peekaboo by allyours — Podcast' }
+import { ComingSoon } from '@/components/coming-soon'
+
+export const metadata = { title: 'Peekaboo by allyours | Podcast' }
+
+// Flip to false when the full podcast page below is ready to show.
+const COMING_SOON = true
+
+export default function Page() {
+  if (COMING_SOON) {
+    return (
+      <ComingSoon
+        kicker="Podcast"
+        title="This page is coming soon."
+        emphasis="soon."
+        body={
+          'We are still building the podcast’s home here. The conversations are already out ' +
+          'in the world, though. Listen while we finish up.'
+        }
+        linksLabel="listen on"
+        links={podcastPage.listen.filter((l) => l.label === 'YouTube' || l.label === 'Spotify')}
+      />
+    )
+  }
+  return <PodcastPageFull />
+}
 
 /**
  * The podcast's own home, deliberately separate from the programs:
  * hero + where to listen → the latest episode, big → the archive →
  * the guests so far → suggest a guest.
  */
-export default function Page() {
+function PodcastPageFull() {
   const p = podcastPage
 
   return (
@@ -117,7 +141,7 @@ export default function Page() {
                 <span className="pill -rotate-1 bg-magenta-ink text-white">Every episode</span>
                 <h2 className="section-title mt-5">The archive.</h2>
                 <p className="mt-6 max-w-[36ch] leading-relaxed text-ink-60">
-                  Newest first. Every episode lives on the pages linked above — nothing is
+                  Newest first. Every episode lives on the pages linked above. Nothing is
                   members-only.
                 </p>
               </Reveal>
@@ -182,6 +206,8 @@ export default function Page() {
                 </p>
                 <Link
                   href={p.suggest.cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-pop mt-8 inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
                 >
                   {p.suggest.cta.label}

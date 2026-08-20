@@ -51,6 +51,8 @@ export function Behind() {
         <Reveal delay={120}>
           <Link
             href={behind.cta.href}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group mt-14 inline-flex items-center gap-4 text-3xl tracking-[-0.035em] sm:text-4xl"
           >
             <span className="link-draw">{behind.cta.label}</span>

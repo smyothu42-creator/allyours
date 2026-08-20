@@ -7,7 +7,7 @@ import { EventList } from '@/components/event-list'
 import { Arrow, Squiggle } from '@/components/doodles'
 import { programsPage } from '@/content/site'
 
-export const metadata = { title: 'Programs — allyours' }
+export const metadata = { title: 'Programs | allyours' }
 
 /**
  * The full program page: Peekaboo — what it is, who it is for, the core

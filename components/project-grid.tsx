@@ -92,7 +92,7 @@ export function ProjectGrid() {
 
       {/* Grid --------------------------------------------------------- */}
       {shown.length === 0 ? (
-        <p className="marker mt-16 text-3xl text-ink-30">nothing here yet — try another filter.</p>
+        <p className="marker mt-16 text-3xl text-ink-30">nothing here yet, try another filter.</p>
       ) : (
         <ul className="mt-8 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {shown.map((w, i) => {

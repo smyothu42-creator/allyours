@@ -7,7 +7,7 @@ import { StoryTimeline } from '@/components/story-timeline'
 import { Arrow, Play } from '@/components/doodles'
 import { aboutPage } from '@/content/site'
 
-export const metadata = { title: 'About — allyours' }
+export const metadata = { title: 'About | allyours' }
 
 /**
  * The trust page, in the order the stub promised: mission & vision →
@@ -113,35 +113,75 @@ export default function Page() {
               <span className="pill -rotate-1 bg-mint text-ink">People</span>
               <h2 className="section-title mt-5">{p.teamTitle}</h2>
             </Reveal>
-            <ul className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
-              {p.team.map((t, i) => {
-                const tint = ['bg-brand/12', 'bg-magenta/14', 'bg-mint/18'][i % 3]
-                const initialTone = ['text-brand', 'text-magenta-ink', 'text-mint-ink'][i % 3]
-                return (
-                  <Reveal key={`${t.name}-${i}`} as="li" variant="pop" delay={(i % 6) * 60} className="group">
-                    {/* arch-shaped portrait slots, like the team sheets on the
-                        moodboard. Drop photos into /public and swap these in.
-                        The arch lifts and its initial wiggles on hover. */}
-                    <div
-                      className={`grid aspect-3/4 place-items-center rounded-t-full rounded-b-2xl transition-transform duration-300 ease-[var(--ease-pop)] group-hover:-translate-y-1.5 ${tint}`}
-                    >
-                      <span
-                        aria-hidden
-                        className={`wiggle-on-hover marker text-6xl opacity-30 ${initialTone}`}
+            {/* The collage from the 2025 year-end report: circle photos
+                orbiting "the us in 'for you and for all of us'" on a deep
+                blue gradient. On large screens each circle sits at its
+                position from the report page (the CSS vars below); on
+                small screens they simply wrap around the centred text. */}
+            <Reveal>
+              <div className="relative mt-14 overflow-hidden rounded-[2.5rem] bg-[linear-gradient(178deg,#1240e0_0%,#2226c7_38%,#050b38_100%)] px-6 py-12 text-white sm:px-10 lg:aspect-[1345/700] lg:px-0 lg:py-0">
+                {/* the mascot above the line: in flow on small screens, at
+                    its report position on large ones */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p.teamCollage.mascot}
+                  alt=""
+                  className="mx-auto w-16 rounded-full lg:absolute lg:left-[46.6%] lg:top-[31.1%] lg:w-[6.7%]"
+                />
+                {/* centred line */}
+                <p className="mt-4 text-center text-3xl leading-[1.15] tracking-[-0.03em] sm:text-4xl lg:absolute lg:inset-x-0 lg:top-[54%] lg:mt-0 lg:-translate-y-1/2 lg:text-[clamp(1.5rem,3.2vw,3.4rem)]">
+                  {p.teamCollage.headline.pre}
+                  <em className="font-extrabold">{p.teamCollage.headline.em}</em>
+                  {p.teamCollage.headline.post}
+                  {p.teamCollage.sub.map((line) => (
+                    <span key={line} className="block">{line}</span>
+                  ))}
+                </p>
+
+                {/* the circles */}
+                <ul
+                  aria-label="The allyours team"
+                  className="mt-10 flex flex-wrap justify-center gap-4 lg:absolute lg:inset-0 lg:mt-0 lg:block"
+                >
+                  {p.teamCollage.photos.map((src, i) => {
+                    // each circle's spot on the report page, as literal
+                    // classes so Tailwind compiles them
+                    const pos = [
+                      'lg:left-[21.9%] lg:top-[22.1%] lg:w-[9.4%]',
+                      'lg:left-[33.8%] lg:top-[17.1%] lg:w-[8.9%]',
+                      'lg:left-[45.5%] lg:top-[10.1%] lg:w-[8.9%]',
+                      'lg:left-[57.3%] lg:top-[17.2%] lg:w-[8.9%]',
+                      'lg:left-[68.7%] lg:top-[22.1%] lg:w-[9.4%]',
+                      'lg:left-[15.8%] lg:top-[41.9%] lg:w-[8.5%]',
+                      'lg:left-[29.1%] lg:top-[41.6%] lg:w-[8.8%]',
+                      'lg:left-[62.0%] lg:top-[41.6%] lg:w-[8.8%]',
+                      'lg:left-[75.7%] lg:top-[41.9%] lg:w-[8.5%]',
+                      'lg:left-[21.9%] lg:top-[60.1%] lg:w-[9.4%]',
+                      'lg:left-[33.8%] lg:top-[65.1%] lg:w-[8.9%]',
+                      'lg:left-[45.4%] lg:top-[72.6%] lg:w-[9.2%]',
+                      'lg:left-[57.3%] lg:top-[65.2%] lg:w-[8.8%]',
+                      'lg:left-[68.8%] lg:top-[60.2%] lg:w-[9.2%]',
+                    ][i]
+                    return (
+                      <Reveal
+                        key={src}
+                        as="li"
+                        variant="pop"
+                        delay={(i % 7) * 60}
+                        className={`w-16 sm:w-20 lg:absolute ${pos}`}
                       >
-                        {t.name.charAt(0)}
-                      </span>
-                    </div>
-                    <div className="mt-3 text-center">
-                      <span className="tag bg-mint px-1.5 text-[0.9rem] font-medium text-ink">
-                        {t.name}
-                      </span>
-                      <p className="mt-1.5 text-xs text-ink-60">{t.role}</p>
-                    </div>
-                  </Reveal>
-                )
-              })}
-            </ul>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={src}
+                          alt=""
+                          className="aspect-square w-full rounded-full object-cover ring-4 ring-white/15 transition-transform duration-300 ease-[var(--ease-pop)] hover:scale-105"
+                        />
+                      </Reveal>
+                    )
+                  })}
+                </ul>
+              </div>
+            </Reveal>
           </div>
         </section>
 
@@ -179,13 +219,16 @@ export default function Page() {
                     <Reveal key={r.label} delay={i * 80} as="li">
                       <Link
                         href={r.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="group flex items-center justify-between gap-4 border-t border-rule py-5 last:border-b"
                       >
                         <span className="text-lg transition-transform duration-300 ease-[var(--ease-pop)] group-hover:translate-x-1.5">
                           {r.label}
                         </span>
-                        <span className="text-ink-30 transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-brand">
-                          <Arrow className="rotate-90" />
+                        {/* same ringed arrow as the Events & showcase list */}
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-rule text-ink-60 transition-all duration-300 ease-[var(--ease-pop)] group-hover:-rotate-45 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+                          <Arrow />
                         </span>
                       </Link>
                     </Reveal>
@@ -220,6 +263,8 @@ export default function Page() {
                       <p className="mt-3 leading-relaxed text-white/70">{w.v}</p>
                       <Link
                         href={w.cta.href}
+                        target={w.cta.href.startsWith('http') ? '_blank' : undefined}
+                        rel={w.cta.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                         className="group mt-auto inline-flex w-fit items-center gap-2 pt-7 font-semibold text-mint"
                       >
                         {w.cta.label}

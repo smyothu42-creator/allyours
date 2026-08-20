@@ -4,7 +4,7 @@ import { Caveat } from 'next/font/google'
 import { BackToTop } from '@/components/back-to-top'
 import './globals.css'
 
-// Neue Haas Grotesk Display Pro — allyours' own licensed typeface, served
+// Neue Haas Grotesk Display Pro | allyours' own licensed typeface, served
 // from app/fonts as woff2 (about a quarter the size of the original TTFs).
 //
 // Only the four weights the site actually uses are shipped, and no italics,
@@ -55,7 +55,7 @@ const markerFallback = Caveat({
 })
 
 export const metadata: Metadata = {
-  title: 'allyours — free creative programs for young people in Myanmar',
+  title: 'allyours | free creative programs for young people in Myanmar',
   description:
     'allyours runs Peekaboo: a free, cohort-based creative program in Myanmar, with ' +
     'specializations in Literature Arts and Design Studies. Apply, listen, or support the work.',
@@ -70,6 +70,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      // Next 16 no longer overrides `scroll-behavior: smooth` on route
+      // changes by itself — this attribute opts back in, so navigating to
+      // a page always starts at the top instantly (anchors stay smooth).
+      data-scroll-behavior="smooth"
       className={`${sans.variable} ${marker.variable} ${markerFallback.variable}`}
     >
       <body>

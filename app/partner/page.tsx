@@ -5,10 +5,11 @@ import { Reveal } from '@/components/reveal'
 import { CountUp } from '@/components/count-up'
 import { ContactForm } from '@/components/contact-form'
 import { Character } from '@/components/character'
+import { PartnerLogos } from '@/components/partner-logos'
 import { Arrow, Squiggle } from '@/components/doodles'
 import { partner, impact, partnerPage } from '@/content/site'
 
-export const metadata = { title: 'Partner — allyours' }
+export const metadata = { title: 'Partner | allyours' }
 
 /**
  * The page for organisations, in the order the stub promised: the offer
@@ -41,6 +42,8 @@ export default function Page() {
               </p>
               <Link
                 href={p.cta.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-pop group mt-9 inline-flex items-center gap-3 rounded-full bg-brand px-7 py-4 text-[0.95rem] font-semibold text-white"
               >
                 {p.cta.label}
@@ -114,24 +117,16 @@ export default function Page() {
         {/* Current partners + reports --------------------------------- */}
         <section id="reports" className="scroll-mt-24 px-5 pb-20 sm:px-8">
           <div className="mx-auto max-w-[110rem]">
-            <div className="grid gap-12 border-t border-rule pt-14 lg:grid-cols-12">
-              <div className="lg:col-span-6">
-                <Reveal>
-                  <span className="pill -rotate-1 bg-mint text-ink">{p.partnersTitle}</span>
-                  {/* Logo slots — drop real logo images in when you have them */}
-                  <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {partner.current.map((name) => (
-                      <li
-                        key={name}
-                        className="grid h-20 place-items-center rounded-xl border border-rule bg-card px-4 text-center text-sm text-ink-30 transition-all duration-300 hover:-translate-y-0.5 hover:border-ink/25 hover:text-ink-60"
-                      >
-                        {name}
-                      </li>
-                    ))}
-                  </ul>
-                </Reveal>
+            <div className="border-t border-rule pt-14">
+              <Reveal>
+                <span className="pill -rotate-1 bg-mint text-ink">{p.partnersTitle}</span>
+              </Reveal>
+              <div className="mt-9">
+                <PartnerLogos />
               </div>
-              <div className="lg:col-span-5 lg:col-start-8">
+            </div>
+            <div className="mt-16 grid gap-12 border-t border-rule pt-14 lg:grid-cols-12">
+              <div className="lg:col-span-6">
                 <Reveal delay={100}>
                   <span className="pill -rotate-1 bg-butter text-ink">{p.reportsTitle}</span>
                   <p className="mt-6 max-w-[40ch] leading-relaxed text-ink-60">{p.reportsBody}</p>
@@ -140,6 +135,8 @@ export default function Page() {
                       <li key={r.label}>
                         <Link
                           href={r.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="group flex items-center justify-between gap-4 border-t border-rule py-4 last:border-b"
                         >
                           <span className="transition-transform duration-300 ease-[var(--ease-pop)] group-hover:translate-x-1.5">

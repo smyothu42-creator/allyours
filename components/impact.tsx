@@ -58,6 +58,8 @@ export function Impact() {
           <div className="mt-12 flex flex-wrap items-center gap-3">
             <Link
               href={impact.primary.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-pop group inline-flex items-center gap-3 rounded-full bg-butter px-8 py-4 text-[0.95rem] font-bold text-ink [--pop-shadow:rgba(255,255,255,0.9)]"
             >
               {impact.primary.label}
