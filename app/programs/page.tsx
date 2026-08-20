@@ -66,7 +66,7 @@ export default function Page() {
                   <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
                     {p.steps.map((s, i) => (
                       <div key={s.k} className="border-t-2 border-white/25 pt-5">
-                        <span className="font-mono text-xs font-semibold text-white/50">
+                        <span className="text-xs font-semibold text-white/50">
                           {String(i + 1).padStart(2, '0')}
                         </span>
                         <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em]">{s.k}</h3>
@@ -109,7 +109,7 @@ export default function Page() {
                 <div className="relative max-w-3xl">
                   <h2 className="section-title">
                     {p.apply.title.replace(p.apply.emphasis, '')}
-                    <span className="marker text-mint">{p.apply.emphasis}</span>
+                    <span className="tag tag-stamp bg-mint text-ink">{p.apply.emphasis}</span>
                   </h2>
                   <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-white/75">
                     {p.apply.body}

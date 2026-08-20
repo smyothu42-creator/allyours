@@ -55,7 +55,7 @@ export default function Page() {
                 <span className="pill -rotate-1 bg-mint text-ink">For alumni</span>
                 <h2 className="section-title mx-auto mt-6 max-w-[18ch]">
                   {p.submit.title.replace('cohort?', '')}
-                  <span className="marker text-mint">cohort?</span>
+                  <span className="tag tag-stamp bg-mint text-ink">cohort?</span>
                 </h2>
                 <p className="mx-auto mt-5 max-w-[42ch] leading-relaxed text-white/70">
                   {p.submit.body}

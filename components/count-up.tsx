@@ -5,9 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 /**
  * Counts a stat up from zero the first time it scrolls into view —
  * "120+" runs 0 → 120 and keeps its plus sign, "250,000 MMK" keeps its
- * commas and unit. Values with no number in them are shown as-is, and
- * anyone who has asked their computer not to animate gets the final
- * number straight away.
+ * commas and unit. Values with no number in them are shown as-is.
  */
 export function CountUp({ value }: { value: string }) {
   // prefix (non-digits) + the number + everything after it
@@ -20,10 +18,6 @@ export function CountUp({ value }: { value: string }) {
 
   useEffect(() => {
     if (!match || target === 0) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShown(target)
-      return
-    }
     const el = ref.current
     if (!el) return
 

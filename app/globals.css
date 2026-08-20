@@ -77,6 +77,9 @@ body::after {
   background-size: 180px 180px;
   opacity: 0.045;
   mix-blend-mode: multiply;
+  /* Own compositor layer: without it, mobile browsers re-blend this
+     full-screen overlay on the CPU every frame anything animates. */
+  transform: translateZ(0);
 }
 
 ::selection {
@@ -431,85 +434,58 @@ body::after {
   stroke-dashoffset: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .reveal,
-  .reveal-pop {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .group:hover .wiggle-on-hover,
-  .pop-in,
-  .menu-in,
-  .sheet-in,
-  .pulse-ring::after,
-  .scroll-progress,
-  .drift-on-scroll,
-  .drift-up,
-  .grow-line {
-    animation: none;
-  }
-  .reveal .tag-stamp,
-  .reveal-pop .tag-stamp {
-    rotate: -1.1deg;
-    scale: 1;
-    opacity: 1;
-    transition: none;
-  }
-  .draw-path {
-    stroke-dashoffset: 0;
-    transition: none;
-  }
-  .marquee-track,
-  .strip-track {
-    animation: none !important;
-  }
-  /* the shadow still appears, but nothing moves */
-  .btn-pop,
-  .btn-pop:hover,
-  .btn-pop:active {
-    transition: none;
-    transform: none;
-  }
-}
+/* NOTE: the site deliberately does NOT honor prefers-reduced-motion —
+   the owner wants identical animation on every device, and the OS-level
+   "Reduce Motion" setting (common on macOS/iOS) was making desktop and
+   tablet look static compared to phones. */
 
 /* Marquee ---------------------------------------------------------- */
+/* translate3d (not translateX) and will-change keep the track on its
+   own compositor layer — Android Chrome and iOS Safari otherwise fall
+   back to repainting the very wide track every frame, which is where
+   the mobile jank comes from. */
 .marquee-track {
   animation: marquee 38s linear infinite;
+  will-change: transform;
 }
 
-/* like the alumni strip, it waits while you read it */
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
+/* like the alumni strip, it waits while you read it — but only where
+   hover is a real state. On touch screens (iOS Safari especially) a tap
+   emulates :hover and sticks, freezing the marquee until the user taps
+   somewhere else. */
+@media (hover: hover) {
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes marquee {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 /* Alumni image strip ----------------------------------------------- */
 .strip-track {
   animation: strip 55s linear infinite;
+  will-change: transform;
 }
 
-.strip:hover .strip-track {
-  animation-play-state: paused;
+@media (hover: hover) {
+  .strip:hover .strip-track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes strip {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 

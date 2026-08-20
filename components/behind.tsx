@@ -12,7 +12,7 @@ export function Behind() {
           <span className="pill -rotate-1 bg-mint text-ink">{behind.kicker}</span>
           <h2 className="section-title mt-5 max-w-[14ch]">
             Why we do it{' '}
-            <span className="marker text-brand">this way.</span>
+            <span className="tag tag-stamp bg-brand text-white">this way.</span>
           </h2>
         </Reveal>
 

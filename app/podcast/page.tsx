@@ -175,7 +175,7 @@ export default function Page() {
                 <span aria-hidden className="tape left-8 top-5 hidden -rotate-6 sm:block" />
                 <h2 className="section-title mx-auto max-w-[18ch]">
                   {p.suggest.title.replace('hear?', '')}
-                  <span className="marker text-brand">hear?</span>
+                  <span className="tag tag-stamp bg-brand text-white">hear?</span>
                 </h2>
                 <p className="mx-auto mt-5 max-w-[40ch] leading-relaxed text-ink-60">
                   {p.suggest.body}

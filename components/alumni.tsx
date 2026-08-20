@@ -59,7 +59,7 @@ export function Alumni() {
         <Reveal delay={100}>
           <div
             ref={rail}
-            className="mx-[calc(50%-50vw)] mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-[calc(50vw-50%+1.25rem)] pb-2 scroll-px-[calc(50vw-50%+1.25rem)] sm:mt-16 sm:gap-6 sm:px-[calc(50vw-50%+2rem)] sm:scroll-px-[calc(50vw-50%+2rem)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="mx-[calc(50%-50vw)] mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-[calc(50vw-50%+1.25rem)] pb-2 pt-2 scroll-px-[calc(50vw-50%+1.25rem)] sm:mt-14 sm:gap-6 sm:px-[calc(50vw-50%+2rem)] sm:scroll-px-[calc(50vw-50%+2rem)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {alumni.works.map((w, i) => {
               const c = accent[w.accent]
@@ -75,7 +75,7 @@ export function Alumni() {
                     >
                       <span className="flex items-center justify-between gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-ink-60">
                         {w.kind}
-                        <span className="font-mono font-semibold text-ink-30">
+                        <span className="font-semibold text-ink-30">
                           {String(i + 1).padStart(2, '0')}
                         </span>
                       </span>

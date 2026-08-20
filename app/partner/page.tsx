@@ -175,7 +175,7 @@ export default function Page() {
                 <div className="relative max-w-3xl">
                   <h2 className="section-title">
                     {p.contact.title.replace('conversation.', '')}
-                    <span className="marker text-mint">conversation.</span>
+                    <span className="tag tag-stamp bg-mint text-ink">conversation.</span>
                   </h2>
                   <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-white/75">
                     {p.contact.body}

@@ -208,7 +208,7 @@ export default function Page() {
                   className="pointer-events-none absolute right-12 top-9 hidden w-24 rotate-2 lg:block"
                 />
                 <h2 className="section-title max-w-[16ch]">
-                  Be a part of <span className="marker text-mint">allyours.</span>
+                  Be a part of <span className="tag tag-stamp bg-mint text-ink">allyours.</span>
                 </h2>
                 <div className="mt-12 grid gap-5 md:grid-cols-3">
                   {p.join.ways.map((w) => (

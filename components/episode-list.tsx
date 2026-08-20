@@ -61,17 +61,12 @@ export function EpisodeList({
   activeRef.current = active
 
   useEffect(() => {
-    // mouse-with-a-cursor users only, and never under reduced motion
+    // mouse-with-a-cursor users only
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const update = () => setCanFloat(fine.matches && !still.matches)
+    const update = () => setCanFloat(fine.matches)
     update()
     fine.addEventListener('change', update)
-    still.addEventListener('change', update)
-    return () => {
-      fine.removeEventListener('change', update)
-      still.removeEventListener('change', update)
-    }
+    return () => fine.removeEventListener('change', update)
   }, [])
 
   useEffect(() => {
@@ -129,7 +124,7 @@ export function EpisodeList({
               className="group flex items-center gap-5 border-t border-rule py-6 transition-colors last:border-b sm:gap-7 sm:py-7"
             >
               {/* episode number, sitting like a jersey number */}
-              <span className="w-9 shrink-0 font-mono text-xs font-semibold text-ink-30 transition-colors group-hover:text-brand">
+              <span className="w-9 shrink-0 text-xs font-semibold text-ink-30 transition-colors group-hover:text-brand">
                 {ep.no}
               </span>
 

@@ -52,26 +52,16 @@ export function EventList({ events }: { events: EventItem[] }) {
   const pos = useRef({ x: 0, y: 0 })
   const tilt = useRef(0)
   const raf = useRef(0)
-  const still = useRef(false)
   const activeRef = useRef<number | null>(null)
   activeRef.current = active
 
   useEffect(() => {
-    // mouse-with-a-cursor users only; reduced motion keeps the card but
-    // drops the glide (handled in the frame loop below)
+    // mouse-with-a-cursor users only
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
-    const quiet = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const update = () => {
-      setCanFloat(fine.matches)
-      still.current = quiet.matches
-    }
+    const update = () => setCanFloat(fine.matches)
     update()
     fine.addEventListener('change', update)
-    quiet.addEventListener('change', update)
-    return () => {
-      fine.removeEventListener('change', update)
-      quiet.removeEventListener('change', update)
-    }
+    return () => fine.removeEventListener('change', update)
   }, [])
 
   useEffect(() => {
@@ -81,17 +71,10 @@ export function EventList({ events }: { events: EventItem[] }) {
       if (card) {
         const dx = target.current.x - pos.current.x
         const dy = target.current.y - pos.current.y
-        if (still.current) {
-          // reduced motion: sit at the cursor, no glide, no lean
-          pos.current.x = target.current.x
-          pos.current.y = target.current.y
-          tilt.current = 0
-        } else {
-          pos.current.x += dx * 0.16
-          pos.current.y += dy * 0.16
-          // lean into the direction of travel, then settle back upright
-          tilt.current += (Math.max(-9, Math.min(9, dx * 0.06)) - tilt.current) * 0.1
-        }
+        pos.current.x += dx * 0.16
+        pos.current.y += dy * 0.16
+        // lean into the direction of travel, then settle back upright
+        tilt.current += (Math.max(-9, Math.min(9, dx * 0.06)) - tilt.current) * 0.1
         card.style.transform =
           `translate3d(${pos.current.x}px, ${pos.current.y}px, 0)` +
           ` rotate(${(activeRef.current ?? 0) % 2 ? -3 : 3}deg)` +
@@ -154,7 +137,7 @@ export function EventList({ events }: { events: EventItem[] }) {
                 className="group flex w-full items-center gap-5 border-t border-rule py-6 text-left last:border-b sm:gap-7 sm:py-7"
               >
                 {/* index, sitting like a jersey number */}
-                <span className="w-9 shrink-0 font-mono text-xs font-semibold text-ink-30 transition-colors group-hover:text-brand">
+                <span className="w-9 shrink-0 text-xs font-semibold text-ink-30 transition-colors group-hover:text-brand">
                   {String(i + 1).padStart(2, '0')}
                 </span>
 

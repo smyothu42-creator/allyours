@@ -39,7 +39,7 @@ export function Newsletter() {
               <span className="pill -rotate-1 bg-white text-brand">{newsletter.kicker}</span>
               <h2 className="section-title mt-6">
                 One email per cohort.{' '}
-                <span className="marker text-mint">Nothing else.</span>
+                <span className="tag tag-stamp bg-mint text-ink">Nothing else.</span>
               </h2>
               <p className="mx-auto mt-6 max-w-[38ch] text-lg leading-relaxed text-white/75">
                 {newsletter.body}

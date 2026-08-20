@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
  * the dashed line to the next one appears.
  *
  * Flat print, like everything else on the site — solid tints, an offset
- * shadow instead of a blur. Under reduced motion it renders in place.
+ * shadow instead of a blur.
  */
 
 export type StoryItem = { year: string; text: string }
@@ -26,15 +26,6 @@ export function StoryTimeline({ items }: { items: StoryItem[] }) {
   const cards = useRef<(HTMLDivElement | null)[]>([])
   const [reached, setReached] = useState(0)
   const [paths, setPaths] = useState<string[]>([])
-  const [still, setStill] = useState(false)
-
-  useEffect(() => {
-    const quiet = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const update = () => setStill(quiet.matches)
-    update()
-    quiet.addEventListener('change', update)
-    return () => quiet.removeEventListener('change', update)
-  }, [])
 
   // draw the dashed connectors between consecutive cards
   useEffect(() => {
@@ -68,10 +59,6 @@ export function StoryTimeline({ items }: { items: StoryItem[] }) {
 
   // wake each note as it scrolls into the lower third of the viewport
   useEffect(() => {
-    if (still) {
-      setReached(items.length)
-      return
-    }
     let raf = 0
     const tick = () => {
       raf = 0
@@ -93,7 +80,7 @@ export function StoryTimeline({ items }: { items: StoryItem[] }) {
       window.removeEventListener('resize', onScroll)
       if (raf) cancelAnimationFrame(raf)
     }
-  }, [still, items.length])
+  }, [items.length])
 
   return (
     <div ref={wrap} className="relative">
@@ -127,8 +114,8 @@ export function StoryTimeline({ items }: { items: StoryItem[] }) {
               ref={(el) => {
                 cards.current[i] = el
               }}
-              className={`relative w-[85%] max-w-[22rem] sm:w-[60%] ${
-                right ? 'self-end sm:-mt-10' : 'self-start'
+              className={`relative w-[85%] max-w-[22rem] sm:w-[60%] lg:w-[40%] ${
+                right ? 'self-end sm:-mt-10 lg:mr-24' : 'self-start'
               }`}
             >
               <div
@@ -145,7 +132,7 @@ export function StoryTimeline({ items }: { items: StoryItem[] }) {
                   }}
                 />
 
-                <span className={`marker text-xl ${look.num}`}>
+                <span className={`text-lg font-bold tracking-[-0.01em] ${look.num}`}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <h3 className="mt-1 text-2xl font-bold tracking-[-0.02em]">{s.year}</h3>

@@ -152,7 +152,7 @@ export default function Page() {
                 <span aria-hidden className="tape left-10 top-6 hidden -rotate-6 sm:block" />
                 <h2 className="section-title mx-auto max-w-[18ch]">
                   {p.join.title.replace('your evenings.', '')}
-                  <span className="marker text-mint">your evenings.</span>
+                  <span className="tag tag-stamp bg-mint text-ink">your evenings.</span>
                 </h2>
                 <p className="mx-auto mt-5 max-w-[44ch] leading-relaxed text-white/75">
                   {p.join.body}
